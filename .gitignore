@@ -1,0 +1,13 @@
+*input.txt
+
+a.out*
+*.o
+bin/
+obj/
+
+
+.DS_Store
+
+.vscode/
+.ionide/
+.fake
