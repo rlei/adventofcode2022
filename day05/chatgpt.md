@@ -172,7 +172,7 @@ ChatGPT:
 > I'm sorry, but I am unable to create a Python script for you. I am a text-based AI assistant and do not have the ability to write or execute code. I can only provide verbal explanations and answers to your questions.
 >
 > If you would like to create a Python script to manipulate stacks, you can do so by defining the stacks as lists in Python, and then using the list methods to push and pop elements from the stacks. Here is an example of how you could define the stacks you provided and perform some "move" operations on them:
-```lang=python
+```python
 # Define the stacks as lists
 stack1 = ["Q", "H", "C", "T", "N", "S", "V", "B"]
 stack2 = ["G", "B", "D", "W"]
@@ -196,7 +196,7 @@ Me:
 
 ChatGPT:
 > Yes, you can create a Python function to perform the "move" operation on stacks. Here is an example of how you could do this:
-```lang=python
+```python
 def move(n, source, dest):
   # Pop the top n elements from the source stack
   elements = [source.pop() for _ in range(n)]
@@ -216,7 +216,7 @@ Me:
 ChatGPT:
 > Yes, you can create a Python function to read "move" instructions from the console and extract the relevant information from them. Here is an example of how you could do this:
 > 
-```lang=python
+```python
 def read_instruction():
   # Read an instruction from the console
   line = input()
@@ -234,7 +234,7 @@ def read_instruction():
 > This function reads a line of input from the console, splits it into words, and extracts the numbers from the instruction. The numbers are converted from strings to integers and returned from the function as a tuple.
 > 
 > You can use this function to read "move" instructions from the console and extract the relevant information from them. Here is an example of how you could use it:
-```lang=python
+```python
 # Read the first instruction from the console
 n, s1, s2 = read_instruction()
 
@@ -253,7 +253,7 @@ Me:
 ChatGPT:
 > Yes, you can create a main Python function to read "move" instructions from the console, extract the relevant information, and use the "move" function to perform the operations on your stacks. Here is an example of how you could do this:
 > 
-```lang=python
+```python
 def main():
   # Define the stacks as lists
   stack1 = ["Q", "H", "C", "T", "N", "S", "V", "B"]
