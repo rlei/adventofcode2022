@@ -9,7 +9,7 @@ You might want to also check out my [last year's attempt](https://github.com/rle
 * Day 3: AArch64 Assembly (macOS flavour)
 * Day 4: [Perl](https://www.perl.org/)
 * Day 5: [ChatGPT](https://chat.openai.com/chat)
-* Day 6:
+* Day 6: [Zig](https://ziglang.org/)
 * Day 7:
 * Day 8:
 * Day 9:
