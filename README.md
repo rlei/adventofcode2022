@@ -10,6 +10,9 @@ You might want to also check out my [last year's attempt](https://github.com/rle
 * Day 4: [Perl](https://www.perl.org/)
 * Day 5: [ChatGPT](https://chat.openai.com/chat)
 * Day 6: [Zig](https://ziglang.org/)
-* Day 7:
+* Day 7: [D](https://dlang.org/)
 * Day 8:
 * Day 9:
+* Day 10:
+* Day 11:
+* Day 12:
