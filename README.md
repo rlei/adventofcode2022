@@ -11,8 +11,10 @@ You might want to also check out my [last year's attempt](https://github.com/rle
 * Day 5: [ChatGPT](https://chat.openai.com/chat)
 * Day 6: [Zig](https://ziglang.org/)
 * Day 7: [D](https://dlang.org/)
-* Day 8:
+* Day 8: [Clojure](https://clojure.org/)
 * Day 9:
 * Day 10:
 * Day 11:
 * Day 12:
+* Day 13:
+* Day 14:

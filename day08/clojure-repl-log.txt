@@ -1,0 +1,232 @@
+~/work/advent2022/day08 (main ✘) ᐅ clj
+Clojure 1.11.1
+user=> (reduce #(if (> %2 first(%1)) (%2 str(second(%1) 1)) (first(%1) (str second(%1) 0))) (-1 "") [0 1 2 3 4 3 2 1])
+Execution error (ClassCastException) at user/eval5 (REPL:1).
+class java.lang.Long cannot be cast to class clojure.lang.IFn (java.lang.Long is in module java.base of loader 'bootstrap'; clojure.lang.IFn is in unnamed module of loader 'app')
+user=> (reduce #(if (> %2 first(%1)) [%2 str(second(%1) 1)] [first(%1) (str second(%1) 0)]) [-1 ""] [0 1 2 3 4 3 2 1])
+Execution error (ArityException) at user/eval13$fn (REPL:1).
+Wrong number of args (0) passed to: clojure.lang.PersistentVector
+user=> (reduce #(if (> %2 (first %1)) [%2 str((second %1) 1)] [(first %1) (str second(%1) 0)]) [-1 ""] [0 1 2 3 4 3 2 1])
+Execution error (ClassCastException) at user/eval21$fn (REPL:1).
+class java.lang.String cannot be cast to class clojure.lang.IFn (java.lang.String is in module java.base of loader 'bootstrap'; clojure.lang.IFn is in unnamed module of loader 'app')
+user=> (reduce #(if (> %2 (first %1)) [%2 str((second %1) 1)] [(first %1) (str second(%1) 0)]) [-1 ""] [0 1 2 3 4 3 2 1])
+Execution error (ClassCastException) at user/eval29$fn (REPL:1).
+class java.lang.String cannot be cast to class clojure.lang.IFn (java.lang.String is in module java.base of loader 'bootstrap'; clojure.lang.IFn is in unnamed module of loader 'app')
+user=> (reduce #(if (> %2 (first %1)) [%2 (str (second %1) 1)] [(first %1) (str second(%1) 0)]) [-1 ""] [0 1 2 3 4 3 2 1])
+Execution error (ArityException) at user/eval37$fn (REPL:1).
+Wrong number of args (0) passed to: clojure.lang.PersistentVector
+user=> [-1 ""]
+[-1 ""]
+user=> (first [-1 ""])
+-1
+user=> (second [-1 ""])
+""
+user=> (str (second [-1 ""]) 0)
+"0"
+user=> (reduce #(if (> %2 (first %1)) [%2 (str (second %1) 1)] [(first %1) (str (second %1) 0)]) [-1 ""] [0 1 2 3 4 3 2 1])
+[4 "11111000"]
+user=> (reduce #(if (> %2 (first %1)) [%2 (str (second %1) 1)] [(first %1) (str (second %1) 0)]) [-1 ""] (reverse [0 1 2 3 4 3 2 1]))
+[4 "11110000"]
+user=> (map #(- %1 '0') "123456")
+Syntax error reading source at (REPL:12:17).
+Unmatched delimiter: )
+"123456"
+Syntax error reading source at (REPL:12:27).
+Unmatched delimiter: )
+user=> (- '1' '0')
+Syntax error reading source at (REPL:13:12).
+Unmatched delimiter: )
+user=> 
+user=> (- 1 0)
+1
+user=> (- '1' 0)
+1
+user=> (- \1 \0)
+Execution error (ClassCastException) at user/eval70 (REPL:1).
+class java.lang.Character cannot be cast to class java.lang.Number (java.lang.Character and java.lang.Number are in module java.base of loader 'bootstrap')
+user=> (- (int \1) (int \0))
+1
+user=> (map #(- %1 (int \0)) "123456")
+Error printing return value (ClassCastException) at clojure.lang.Numbers/minus (Numbers.java:164).
+class java.lang.Character cannot be cast to class java.lang.Number (java.lang.Character and java.lang.Number are in module java.base of loader 'bootstrap')
+(user=> (map #(- (int %1) (int \0)) "123456")
+(1 2 3 4 5 6)
+user=> (defn str-to-num-seq [s] (map #(- (int %1) (int \0)) s))
+#'user/str-to-num-seq
+user=> (str-to-num-seq "01234")
+(0 1 2 3 4)
+user=> (->> (reduce #(if (> %2 (first %1)) [%2 (str (second %1) 1)] [(first %1) (str (second %1) 0)]) [-1 ""] (reverse [0 1 2 3 4 3 2 1])) second)
+"11110000"
+user=> (->> [0 1 2 3 4 3 2 1]
+            (reduce #(if (> %2 (first %1)) [%2 (str (second %1) 1)] [(first %1) (str (second %1) 0)]) [-1 ""]) second)
+"11111000"
+user=> (defn visible-trees [s]
+           (->> (reduce #(if (> %2 (first %1)) [%2 (str (second %1) 1)] [(first %1) (str (second %1) 0)]) [-1 ""] s) second))
+#'user/visible-trees
+user=> (->> "12453"
+            str-to-num-seq
+            visible-trees)
+"11110"
+user=> (defn str-to-visible-trees [s]
+        ->> s str-to-num-seq visible-trees)
+Syntax error compiling at (REPL:1:1).
+Can't take value of a macro: #'clojure.core/->>
+user=> (defn str-to-visible-trees [s]
+        (->> s str-to-num-seq visible-trees)
+)
+#'user/str-to-visible-trees
+user=> (str-to-visible-trees "13250")
+"11010"
+user=> (defn two-way-str-to-visible-trees [s]
+
+)
+#'user/two-way-str-to-visible-trees
+user=> (defn bit-or-strings [s1 s2] 
+        (->> (map vector (str-to-num-seq s1) (str-to-num-seq s2)) (reduce #(str (| %1 %2))))
+)
+Syntax error compiling at (REPL:2:81).
+Unable to resolve symbol: | in this context
+user=>         (->> (map vector (str-to-num-seq s1) (str-to-num-seq s2)) (reduce #(str (bit-or %1 %2))))
+Syntax error compiling at (REPL:1:18).
+Unable to resolve symbol: s1 in this context
+user=> (defn bit-or-strings [s1 s2] 
+        (->> (map vector (str-to-num-seq s1) (str-to-num-seq s2)) (reduce #(str (bit-or %1 %2))))
+)
+#'user/bit-or-strings
+user=> (bit-or-strings "0100" "0001")
+Execution error (IllegalArgumentException) at user/bit-or-strings$fn (REPL:2).
+bit operation not supported for: class clojure.lang.PersistentVector
+user=>         (->> (map vector (str-to-num-seq s1) (str-to-num-seq s2)) (map #(str (bit-or (first %1) (second %1))))))
+Syntax error compiling at (REPL:1:18).
+Unable to resolve symbol: s1 in this context
+Syntax error reading source at (REPL:48:113).
+Unmatched delimiter: )
+user=> (defn bit-or-strings [s1 s2] 
+        (->> (map vector (str-to-num-seq s1) (str-to-num-seq s2)) (map #(str (bit-or (first %1) (second %1))))))
+#'user/bit-or-strings
+user=> (bit-or-strings "0100" "0001")
+("0" "1" "0" "1")
+user=> (defn bit-or-strings [s1 s2] 
+        (->> (map vector (str-to-num-seq s1) (str-to-num-seq s2)) (map #(str (bit-or (first %1) (second %1))))) str)
+#'user/bit-or-strings
+user=> (bit-or-strings "0100" "0001")
+#object[clojure.core$str 0x2abc224d "clojure.core$str@2abc224d"]
+user=> (defn bit-or-strings [s1 s2] 
+        (->> (map vector (str-to-num-seq s1) (str-to-num-seq s2)) (map #(bit-or (first %1) (second %1))) (clojure/string.join "") ) )
+Syntax error compiling at (REPL:2:106).
+No such namespace: clojure
+user=> (require '[clojure.string :as string])
+nil
+user=> 
+user=> (defn bit-or-strings [s1 s2] 
+        (->> (map vector (str-to-num-seq s1) (str-to-num-seq s2)) (map #(bit-or (first %1) (second %1))) (string.join "") ) )
+Syntax error (ClassNotFoundException) compiling at (REPL:2:106).
+string.join
+user=>         (->> (map vector (str-to-num-seq s1) (str-to-num-seq s2)) (map #(bit-or (first %1) (second %1))) (string/join "") ) )
+Syntax error compiling at (REPL:1:18).
+Unable to resolve symbol: s1 in this context
+Syntax error reading source at (REPL:61:126).
+Unmatched delimiter: )
+user=> (defn bit-or-strings [s1 s2] 
+        (->> (map vector (str-to-num-seq s1) (str-to-num-seq s2)) (map #(bit-or (first %1) (second %1))) (string/join "") ) )
+#'user/bit-or-strings
+user=> (bit-or-strings "0100" "0001")
+"0101"
+user=> (defn str-to-visible-trees-two-way [s]
+          (bit-or-strings (str-to-visible-trees s) (str-to-visible-trees (reverse s))))
+#'user/str-to-visible-trees-two-way
+user=> (str-to-visible-trees-two-way "012435231")
+"111101000"
+user=> (defn str-to-visible-trees-two-way [s]
+          (bit-or-strings (str-to-visible-trees s) (reverse (str-to-visible-trees (reverse s)))))
+#'user/str-to-visible-trees-two-way
+user=> (str-to-visible-trees-two-way "012435231")
+"111101011"
+user=> (defn transpose [rows] (apply map vector rows))
+#'user/transpose
+user=> 
+user=> (transpose ["123" "456" "789"])
+([\1 \4 \7] [\2 \5 \8] [\3 \6 \9])
+user=> (str-to-visible-trees [\1 \4 \7])
+"111"
+user=> (defn rows-to-visible-trees [rows] (map str-to-visible-trees-two-way rows))
+#'user/rows-to-visible-trees
+user=> (rows-to-visible-trees ["123" "456" "789"])
+("111" "111" "111")
+user=> (transpose (rows-to-visible-trees (traspose ["123" "456" "789"])))
+Syntax error compiling at (REPL:1:35).
+Unable to resolve symbol: traspose in this context
+user=> (transpose (rows-to-visible-trees (transpose ["123" "456" "789"])))
+([\1 \1 \1] [\1 \1 \1] [\1 \1 \1])
+user=> (transpose (rows-to-visible-trees (transpose ["123" "456" "089"])))
+([\1 \1 \1] [\1 \1 \1] [\1 \1 \1])
+user=> (transpose (rows-to-visible-trees (transpose ["123" "456" "109"])))
+([\1 \1 \1] [\1 \1 \1] [\1 \1 \1])
+user=> (transpose (rows-to-visible-trees (transpose ["123" "406" "109"])))
+([\1 \1 \1] [\1 \0 \1] [\1 \1 \1])
+user=> (defn square-to-visible-trees [rows]
+        (map bit-or-strings  (map str-to-visible-trees-two-way rows) (transpose (rows-to-visible-trees (traspose ["123" "456" "789"])))))
+Syntax error compiling at (REPL:2:104).
+Unable to resolve symbol: traspose in this context
+user=>         (map bit-or-strings  (map str-to-visible-trees-two-way rows) (transpose (rows-to-visible-trees (transpose rows)))))
+Syntax error compiling at (REPL:1:22).
+Unable to resolve symbol: rows in this context
+Syntax error reading source at (REPL:84:124).
+Unmatched delimiter: )
+user=> (defn square-to-visible-trees [rows]
+        (map bit-or-strings  (map str-to-visible-trees-two-way rows) (transpose (rows-to-visible-trees (transpose rows)))))
+#'user/square-to-visible-trees
+user=> (square-to-visible-trees ["123" "456" "789"])
+("111" "111" "111")
+user=> (square-to-visible-trees ["30373" "25512" "65332" "33549" "35390"])
+("11111" "11101" "11011" "10101" "11111")
+user=> (defn count-ones [xs] ->> (concat xs) str-to-
+str-to-num-seq                str-to-visible-trees          str-to-visible-trees-two-way  
+user=> (defn count-ones [xs] ->> (concat xs) str-to-num-seq (reduce +))
+Syntax error compiling at (REPL:1:1).
+Can't take value of a macro: #'clojure.core/->>
+user=> (defn count-ones [xs] (->> (concat xs) str-to-num-seq (reduce +)))
+#'user/count-ones
+user=> (count-ones ["1101" "1001"])
+Execution error (ClassCastException) at user/str-to-num-seq$fn (REPL:1).
+class java.lang.String cannot be cast to class java.lang.Character (java.lang.String and java.lang.Character are in module java.base of loader 'bootstrap')
+user=> (->> (concat ["11" "01"]) str-to-num-seq )
+Error printing return value (ClassCastException) at clojure.lang.RT/intCast (RT.java:1221).
+class java.lang.String cannot be cast to class java.lang.Character (java.lang.String and java.lang.Character are in module java.base of loader 'bootstrap')
+(user=> (concat ["11" "01"])
+("11" "01")
+user=> (concat [["11"] ["01"])
+Syntax error reading source at (REPL:95:24).
+Unmatched delimiter: )
+user=> (concat [["11"] ["01"]])
+(["11"] ["01"])
+user=> (string/join ("11111" "11101" "11011" "10101" "11111"))
+Execution error (ClassCastException) at user/eval355 (REPL:1).
+class java.lang.String cannot be cast to class clojure.lang.IFn (java.lang.String is in module java.base of loader 'bootstrap'; clojure.lang.IFn is in unnamed module of loader 'app')
+user=> (string/join ["11111" "11101" "11011" "10101" "11111"])
+"1111111101110111010111111"
+user=>  (defn count-ones [xs] (->> (string/join xs) str-to-num-seq (reduce +)))
+#'user/count-ones
+user=> (count-ones ["1101" "1001"])
+5
+user=> (def count-ones (->> string/join str-to-num-seq (reduce +)))
+Execution error (IllegalArgumentException) at clojure.main/main (main.java:40).
+Don't know how to create ISeq from: clojure.string$join
+user=> (defn count-ones (->> string/join str-to-num-seq (reduce +)))
+Syntax error macroexpanding clojure.core/defn at (REPL:1:1).
+->> - failed: vector? at: [:fn-tail :arity-n :bodies :params] spec: :clojure.core.specs.alpha/param-list
+(->> string/join str-to-num-seq (reduce +)) - failed: vector? at: [:fn-tail :arity-1 :params] spec: :clojure.core.specs.alpha/param-list
+user=>  (defn count-ones [xs] (->> (string/join xs) str-to-num-seq (reduce +)))
+#'user/count-ones
+user=> (println
+ (->> (line-seq (java.io.BufferedReader. *in*))
+      square-to-visible-trees
+      count-ones))
+30373
+25512
+65332
+33549
+35390
+21
+nil
+user=> 

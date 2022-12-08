@@ -12,3 +12,7 @@ obj/
 .vscode/
 .ionide/
 .fake
+
+.clj-kondo/
+.lsp/
+
