@@ -12,9 +12,10 @@ You might want to also check out my [last year's attempt](https://github.com/rle
 * Day 6: [Zig](https://ziglang.org/)
 * Day 7: [D](https://dlang.org/)
 * Day 8: [Clojure](https://clojure.org/)
-* Day 9:
+* Day 9: [Groovy](https://groovy-lang.org/)
 * Day 10:
 * Day 11:
 * Day 12:
 * Day 13:
+* Day 14:
 * Day 14:
