@@ -1,5 +1,5 @@
 *input.txt
-test.txt
+*test*.txt
 
 a.out*
 *.o
@@ -18,3 +18,4 @@ obj/
 
 _build/
 
+*.hi
