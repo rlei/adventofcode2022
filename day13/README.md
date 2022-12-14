@@ -14,3 +14,9 @@ To run:
 
 `./prob1_2 < path/to/input_data`
 
+### See also
+
+* [Intro to Parsing with Parsec in Haskell](https://jakewheat.github.io/intro_to_parsing/#simple-sql-query-parser)
+* [Real World Haskell - Chapter 16. Using Parsec](https://book.realworldhaskell.org/read/using-parsec.html)
+  * [中文版](http://cnhaskell.com/chp/16.html)
+
