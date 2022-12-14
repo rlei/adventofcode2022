@@ -17,9 +17,10 @@ You might want to also check out my [last year's attempt](https://github.com/rle
 * Day 11: [OCaml](https://ocaml.org/)
 * Day 12: [Python](https://www.python.org/)
 * Day 13: [Haskell](https://www.haskell.org/)
-* Day 14:
+* Day 14: [Crystal](https://crystal-lang.org/)
 * Day 14:
 * Day 15:
 * Day 16:
 * Day 16:
 * Day 17:
+* Day 18:

@@ -13,9 +13,15 @@ obj/
 .ionide/
 .fake
 
+# Clojure
 .clj-kondo/
 .lsp/
 
+# OCaml
 _build/
 
+# Haskell
 *.hi
+
+# Crystal
+*.dwarf
