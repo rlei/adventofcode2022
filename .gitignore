@@ -25,3 +25,7 @@ _build/
 
 # Crystal
 *.dwarf
+
+# Rust
+target/
+

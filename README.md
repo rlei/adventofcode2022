@@ -19,9 +19,10 @@ You might want to also check out my [last year's attempt](https://github.com/rle
 * Day 13: [Haskell](https://www.haskell.org/)
 * Day 14: [Crystal](https://crystal-lang.org/)
 * Day 15: [TypeScript](https://www.typescriptlang.org/) (using [Deno](https://deno.land/)).
-* Day 16:
-* Day 16:
+* Day 16: [Rust](https://www.rust-lang.org/)
 * Day 17:
 * Day 18:
 * Day 19:
 * Day 20:
+* Day 21:
+* Day 22:
