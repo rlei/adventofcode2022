@@ -1,7 +1,9 @@
+use bitvec::vec::BitVec;
 use clap::Parser;
 use itertools::Itertools;
 use regex::Regex;
 use std::collections::{BinaryHeap, HashMap, HashSet};
+use std::io::Write;
 use std::{cmp, io};
 
 type ValveId = u8;
@@ -22,12 +24,16 @@ struct Args {
     /// Solves problem 2
     #[arg(long, default_value_t = false)]
     prob2: bool,
+
+    /// Being chatty
+    #[arg(short, long, default_value_t = false)]
+    verbose: bool,
 }
 
 fn main() {
     let args = Args::parse();
     let minutes = args.minutes;
-    println!("Using minutes: {}", minutes);
+    println!("Remaining minutes: {}", minutes);
 
     let re =
         Regex::new(r"Valve (\S+) has flow rate=(\d+); tunnels? leads? to valves? (.*)").unwrap();
@@ -41,8 +47,9 @@ fn main() {
             let rate = cap[2].parse::<u16>().unwrap();
             let leads_to: Vec<_> = cap[3].split(", ").map(|s| s.to_owned()).collect();
 
-            // let valve = Valve::new(name.clone(), rate, leads_to);
-            println!("Valve: {} rate: {} leads to {:?}", name, rate, &leads_to);
+            if args.verbose {
+                println!("Valve: {} rate: {} leads to {:?}", name, rate, &leads_to);
+            }
             (name, rate, leads_to)
         })
         .collect();
@@ -78,22 +85,71 @@ fn main() {
             &good_valves,
             &good_valves_distances,
             minutes,
+            args.verbose,
         );
         println!("Most pressure {:?}", max_pressure);
     } else {
-        let max_pressure = find_max_pressure2(
-            &graph,
-            start_valve,
-            &good_valves,
-            &good_valves_distances,
-            minutes,
-        );
-        println!("{:?}", max_pressure);
-        println!(
-            "Most pressure {}",
-            max_pressure.0.released + max_pressure.1.released
-        );
+        let mut progress = 0;
+
+        let subsets: Vec<_> = good_valves.iter().cloned().powerset().collect();
+        if args.verbose {
+            println!("{} valves subsets to examine", subsets.len());
+        }
+        let subsets_max_results: HashMap<_, _> = subsets
+            .iter()
+            .map(|subset| {
+                if args.verbose {
+                    let percent_before = progress * 100 / subsets.len();
+                    progress += 1;
+                    let percent_now = progress * 100 / subsets.len();
+                    if percent_before != percent_now {
+                        print!(".");
+                        if percent_now % 10 == 0 {
+                            print!("{}%", percent_now);
+                        }
+                        io::stdout().flush().unwrap();
+                    }
+                }
+                let max = find_max_pressure(
+                    &graph,
+                    start_valve,
+                    &subset,
+                    &good_valves_distances,
+                    minutes,
+                    false,
+                );
+                (valves_to_bitmask(subset), max)
+            })
+            .collect();
+        if args.verbose {
+            println!();
+        }
+
+        let good_valves_bv = valves_to_bitmask(&good_valves);
+        let (max1, max2) = subsets
+            .into_iter()
+            .map(|subset| {
+                let subset_bv = valves_to_bitmask(&subset);
+                let the_others = good_valves_bv.clone() ^ subset_bv.clone();
+
+                let res1 = subsets_max_results.get(&subset_bv).unwrap();
+                let res2 = subsets_max_results.get(&the_others).unwrap();
+                (res1, res2)
+            })
+            .max_by_key(|(max1, max2)| max1.released + max2.released)
+            .unwrap();
+        println!("{:?}\n{:?}", max1, max2);
+        println!("Most pressure {}", max1.released + max2.released);
     }
+}
+
+fn valves_to_bitmask(valves: &Vec<ValveId>) -> BitVec<u64> {
+    let bits = valves
+        .iter()
+        .map(|v| 1u64 << v)
+        .reduce(|a, b| a | b)
+        .unwrap_or(0);
+    BitVec::<_>::from_element(bits)
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -109,167 +165,71 @@ fn find_max_pressure(
     good_valves: &Vec<ValveId>,
     good_valves_distances: &HashMap<(ValveId, ValveId), u16>,
     remaining_minutes: u16,
-) -> (Vec<ValveId>, u16) {
+    verbose: bool,
+) -> State {
     let mut visited_states = vec![State {
         opened: vec![start_valve],
         released: 0,
         remaining_minutes,
     }];
 
-    let mut final_paths = Vec::new();
+    let mut max_path: Option<State> = None;
+    let mut max_pressure = 0;
 
     loop {
         let mut next_visited_states = Vec::new();
+        let visited_states_len = visited_states.len();
+
         for state in visited_states.into_iter() {
             let mut next_moves = Vec::new();
             for v in good_valves.iter() {
                 if !state.opened.contains(v) {
-                    if let Some(next) = try_move(&state, *v, graph[v].rate, good_valves_distances) {
-                        next_moves.push(next);
-                        // println!("opened {:?}, {:?}", now_opened, state);
-                    };
+                    // +1 for opening the Valve
+                    let minutes_took =
+                        good_valves_distances[&(*state.opened.last().unwrap(), *v)] + 1;
+                    if state.remaining_minutes < minutes_took {
+                        continue;
+                    }
+                    let remaining = state.remaining_minutes - minutes_took;
+
+                    let mut now_opened = Vec::with_capacity(state.opened.len() + 1);
+                    now_opened.extend(state.opened.iter());
+                    now_opened.push(*v);
+
+                    next_moves.push(State {
+                        opened: now_opened,
+                        released: state.released + graph[v].rate * remaining,
+                        remaining_minutes: remaining,
+                    });
                 }
             }
             if next_moves.is_empty() {
                 // no more move for this state
-                final_paths.push(state);
+                if state.released > max_pressure {
+                    max_pressure = state.released;
+                    max_path = Some(state);
+                }
             } else {
                 next_visited_states.extend(next_moves);
             }
         }
+        if verbose {
+            println!(
+                "{} visited states, {} next states",
+                visited_states_len,
+                next_visited_states.len()
+            );
+        }
         if next_visited_states.is_empty() {
             // all possible paths (within the time bound) have been traversed
             break;
         }
         visited_states = next_visited_states;
     }
-    let max_state = final_paths
-        .into_iter()
-        .max_by_key(|state| state.released)
-        .unwrap();
-    (max_state.opened, max_state.released)
-}
-
-fn find_max_pressure2(
-    graph: &HashMap<ValveId, Valve>,
-    start_valve: ValveId,
-    good_valves: &Vec<ValveId>,
-    good_valves_distances: &HashMap<(ValveId, ValveId), u16>,
-    remaining_minutes: u16,
-) -> (State, State) {
-    let init = State {
-        opened: vec![start_valve],
+    max_path.unwrap_or(State {
+        opened: vec![],
         released: 0,
         remaining_minutes,
-    };
-    let mut visited_states = HashSet::from([(init.clone(), init.clone())]);
-
-    let mut max_path: Option<(State, State)> = None;
-    let mut max_pressure = 0;
-
-    loop {
-        let mut next_visited_states = HashSet::new();
-        let visited_states_len = visited_states.len();
-        for (state1, state2) in visited_states.into_iter() {
-            let mut next_moves = HashSet::new();
-
-            let visited: HashSet<_> = state1.opened.iter().chain(state2.opened.iter()).collect();
-
-            let next_valves: Vec<_> = good_valves
-                .iter()
-                .filter(|v| !visited.contains(v))
-                .collect();
-
-            if next_valves.len() > 1 {
-                for pair in next_valves.into_iter().permutations(2) {
-                    let next1 = try_move(
-                        &state1,
-                        *pair[0],
-                        graph[pair[0]].rate,
-                        good_valves_distances,
-                    );
-                    let next2 = try_move(
-                        &state2,
-                        *pair[1],
-                        graph[pair[1]].rate,
-                        good_valves_distances,
-                    );
-                    if next1.is_some() || next2.is_some() {
-                        next_moves.insert((
-                            next1.unwrap_or(state1.clone()),
-                            next2.unwrap_or(state2.clone()),
-                        ));
-                    }
-                }
-            } else if next_valves.len() == 1 {
-                let next = next_valves[0];
-                if let Some(next1) =
-                    try_move(&state1, *next, graph[next].rate, good_valves_distances)
-                {
-                    next_moves.insert((next1, state2.clone()));
-                } else if let Some(next2) =
-                    try_move(&state2, *next, graph[next].rate, good_valves_distances)
-                {
-                    next_moves.insert((state1.clone(), next2));
-                };
-            }
-            /*
-            println!(
-                "{} next moves for state {:?}",
-                next_moves.len(),
-                (&state1, &state2)
-            );
-            */
-            if next_moves.is_empty() {
-                if state1.released + state2.released > max_pressure {
-                    max_pressure = state1.released + state2.released;
-                    max_path = Some((state1, state2));
-                }
-            } else {
-                for (state1, state2) in next_moves {
-                    if !next_visited_states.contains(&(state1.clone(), state2.clone()))
-                        && !next_visited_states.contains(&(state2.clone(), state1.clone()))
-                    {
-                        next_visited_states.insert((state1, state2));
-                    }
-                }
-            }
-        }
-        println!(
-            "{} visited states, {} next states",
-            visited_states_len,
-            next_visited_states.len()
-        );
-        if next_visited_states.is_empty() {
-            // all possible paths (within the time bound) have been traversed
-            break;
-        }
-        visited_states = next_visited_states;
-    }
-    max_path.unwrap()
-}
-
-fn try_move(
-    state: &State,
-    next: ValveId,
-    next_rate: u16,
-    distances: &HashMap<(ValveId, ValveId), u16>,
-) -> Option<State> {
-    // +1 for opening the Valve
-    let minutes_took = distances[&(*state.opened.last().unwrap(), next)] + 1;
-    if state.remaining_minutes < minutes_took {
-        return None;
-    }
-    let remaining = state.remaining_minutes - minutes_took;
-
-    let mut now_opened = Vec::with_capacity(state.opened.len() + 1);
-    now_opened.extend(state.opened.iter());
-    now_opened.push(next);
-
-    Some(State {
-        opened: now_opened,
-        released: state.released + next_rate * remaining,
-        remaining_minutes: remaining,
     })
 }
 
