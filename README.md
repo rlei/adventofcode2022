@@ -22,9 +22,10 @@ You might want to also check out my [last year's attempt](https://github.com/rle
 * Day 16: [Rust](https://www.rust-lang.org/)
 * Day 17: [C++](https://en.wikipedia.org/wiki/C%2B%2B) (C++17)
 * Day 18: [Nim](https://nim-lang.org/)
-* Day 19:
+* Day 19: [Julia](https://julialang.org/) (and [JuMP](https://jump.dev/JuMP.jl/stable/) + [HiGHS](https://github.com/jump-dev/HiGHS.jl))
 * Day 20:
 * Day 21:
 * Day 22:
 * Day 23:
 * Day 24:
+* Day 25:
