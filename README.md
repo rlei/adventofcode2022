@@ -21,9 +21,10 @@ You might want to also check out my [last year's attempt](https://github.com/rle
 * Day 15: [TypeScript](https://www.typescriptlang.org/) (using [Deno](https://deno.land/)).
 * Day 16: [Rust](https://www.rust-lang.org/)
 * Day 17: [C++](https://en.wikipedia.org/wiki/C%2B%2B) (C++17)
-* Day 18:
+* Day 18: [Nim](https://nim-lang.org/)
 * Day 19:
 * Day 20:
 * Day 21:
 * Day 22:
 * Day 23:
+* Day 24:
