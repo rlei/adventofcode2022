@@ -29,3 +29,5 @@ _build/
 # Rust
 target/
 
+# Java
+*.class

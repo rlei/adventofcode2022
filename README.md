@@ -24,7 +24,7 @@ You might want to also check out my [last year's attempt](https://github.com/rle
 * Day 18: [Nim](https://nim-lang.org/)
 * Day 19: [Julia](https://julialang.org/) (and [JuMP](https://jump.dev/JuMP.jl/stable/) + [HiGHS](https://github.com/jump-dev/HiGHS.jl))
 * Day 20:
-* Day 21:
+* Day 21: [Java](https://www.java.com/) (17+)
 * Day 22:
 * Day 23:
 * Day 24:
