@@ -9,6 +9,7 @@ obj/
 
 .DS_Store
 
+.config/
 .vscode/
 .ionide/
 .fake
