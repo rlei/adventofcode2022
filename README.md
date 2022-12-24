@@ -1,6 +1,6 @@
 # Advent of Code 2022, One Language A Day
 
-This repo aims to solve the [Advent of Code 2022](https://adventofcode.com/2022/) problems one day with a different language.
+This repo aims to solve the [Advent of Code 2022](https://adventofcode.com/2022/) problems each day with a different language.
 
 You might want to also check out my [last year's attempt](https://github.com/rlei/adventofcode2021).
 
