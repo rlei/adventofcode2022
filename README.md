@@ -27,5 +27,6 @@ You might want to also check out my [last year's attempt](https://github.com/rle
 * Day 21: [Java](https://www.java.com/) (17+)
 * Day 22: (WIP)
 * Day 23: [F#](https://fsharp.org/)
-* Day 24:
+* Day 24: [Kotlin](https://kotlinlang.org/)
 * Day 25:
+
