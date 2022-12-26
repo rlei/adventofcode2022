@@ -25,7 +25,7 @@ You might want to also check out my [last year's attempt](https://github.com/rle
 * Day 19: [Julia](https://julialang.org/) (and [JuMP](https://jump.dev/JuMP.jl/stable/) + [HiGHS](https://github.com/jump-dev/HiGHS.jl))
 * Day 20: (WIP)
 * Day 21: [Java](https://www.java.com/) (17+)
-* Day 22: (WIP)
+* Day 22: [Swift](https://developer.apple.com/swift/)
 * Day 23: [F#](https://fsharp.org/)
 * Day 24: [Kotlin](https://kotlinlang.org/)
 * Day 25: [C](https://en.wikipedia.org/wiki/C_(programming_language))
