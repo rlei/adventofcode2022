@@ -6,6 +6,7 @@ a.out*
 bin/
 obj/
 
+.idea
 
 .DS_Store
 
@@ -32,3 +33,9 @@ target/
 
 # Java
 *.class
+META-INF/
+
+# Scala 3
+*.tasty
+.bsp
+.metals

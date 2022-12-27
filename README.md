@@ -15,7 +15,7 @@ You might want to also check out my [last year's attempt](https://github.com/rle
 * Day 9: [Groovy](https://groovy-lang.org/)
 * Day 10: [Go](https://go.dev/)
 * Day 11: [OCaml](https://ocaml.org/)
-* Day 12: [Python](https://www.python.org/)
+* Day 12: [Python](https://www.python.org/) 3
 * Day 13: [Haskell](https://www.haskell.org/)
 * Day 14: [Crystal](https://crystal-lang.org/)
 * Day 15: [TypeScript](https://www.typescriptlang.org/) (using [Deno](https://deno.land/)).
@@ -23,7 +23,7 @@ You might want to also check out my [last year's attempt](https://github.com/rle
 * Day 17: [C++](https://en.wikipedia.org/wiki/C%2B%2B) (C++17)
 * Day 18: [Nim](https://nim-lang.org/)
 * Day 19: [Julia](https://julialang.org/) (and [JuMP](https://jump.dev/JuMP.jl/stable/) + [HiGHS](https://github.com/jump-dev/HiGHS.jl))
-* Day 20: (WIP)
+* Day 20: [Scala](https://www.scala-lang.org/) 3
 * Day 21: [Java](https://www.java.com/) (17+)
 * Day 22: [Swift](https://developer.apple.com/swift/)
 * Day 23: [F#](https://fsharp.org/)
