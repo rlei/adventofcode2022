@@ -6,7 +6,7 @@ import java.util.function.BiFunction;
 
 class prob1 {
     sealed interface Expr {
-        public long eval();
+        long eval();
     }
 
     record Constant(long n) implements Expr {
@@ -50,10 +50,10 @@ class prob1 {
 
         final var lookupTable = new HashMap<String, Expr>();
         final Map<String, BiFunction<Expr, Expr, Expr>> opToExpr = Map.of(
-            "+", Add::new,
-            "-", Sub::new,
-            "*", Multiply::new,
-            "/", Divide::new);
+                "+", Add::new,
+                "-", Sub::new,
+                "*", Multiply::new,
+                "/", Divide::new);
 
         new BufferedReader(new InputStreamReader(System.in)).lines()
                 .forEach(line -> {
