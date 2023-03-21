@@ -2,6 +2,8 @@
 
 Written in [Java](https://www.java.com/). Requires JDK 17+ due to the use of record class and sealed types.
 
+The input data can be downloaded from https://adventofcode.com/2022/day/21.
+
 ## Problem 1
 
 To build:
